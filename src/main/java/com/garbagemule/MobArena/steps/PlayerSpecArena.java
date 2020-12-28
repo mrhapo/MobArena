@@ -18,7 +18,6 @@ public class PlayerSpecArena {
         factories.add(SitPets.create());
         factories.add(MoveToSpec.create(arena));
         factories.add(SetGameMode.create());
-        factories.add(ClearInventory.create(arena));
         factories.add(ClearPotionEffects.create());
         factories.add(SetFlying.create());
         factories.add(SetHealth.create());
