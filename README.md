@@ -13,3 +13,4 @@ MobArena
 
 All I did here is remove everytime the player's inventory is cleared and when it is saved in the inventories folder.
 This could be usefull if you're only using the My-Items class for your players and you want them to keep their inventory everywhere or anything like that.
+**This is the 1.12 version of MobArena!**
