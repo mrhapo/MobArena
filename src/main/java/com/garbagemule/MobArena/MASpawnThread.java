@@ -348,7 +348,6 @@ public class MASpawnThread implements Runnable
             }
 
             arena.getMessenger().tell(p, "Leaving so soon?");
-            p.getInventory().clear();
             arena.playerLeave(p);
         }
     }
