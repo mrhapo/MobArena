@@ -23,41 +23,18 @@ public class InventoryManager
     }
 
     public void put(Player p, ItemStack[] contents) {
-        inventories.put(p, contents);
     }
 
     public void equip(Player p) {
-        ItemStack[] contents = inventories.get(p);
-        if (contents == null) {
-            return;
-        }
-        p.getInventory().setContents(contents);
     }
 
     public void remove(Player p) {
-        inventories.remove(p);
     }
 
     /**
-     * Clear a player's inventory completely.
-     * @param p a player
+     * Removed the clearInventory events
      */
     public static void clearInventory(Player p) {
-        PlayerInventory inv = p.getInventory();
-        inv.clear();
-        inv.setHelmet(null);
-        inv.setChestplate(null);
-        inv.setLeggings(null);
-        inv.setBoots(null);
-        inv.setItemInOffHand(null);
-        InventoryView view = p.getOpenInventory();
-        if (view != null) {
-            view.setCursor(null);
-            Inventory i = view.getTopInventory();
-            if (i != null) {
-                i.clear();
-            }
-        }
     }
 
     public static boolean hasEmptyInventory(Player p) {
@@ -79,25 +56,4 @@ public class InventoryManager
     }
 
     public static boolean restoreFromFile(MobArena plugin, Player p) {
-        try {
-            File inventories = new File(plugin.getDataFolder(), "inventories");
-            File file = new File(inventories, p.getUniqueId().toString());
-
-            if (!file.exists()) {
-                return false;
-            }
-
-            YamlConfiguration config = new YamlConfiguration();
-            config.load(file);
-
-            ItemStack[] contents = config.getList("contents").toArray(new ItemStack[0]);
-            p.getInventory().setContents(contents);
-
-            file.delete();
-            return true;
-        } catch (Exception e) {
-            plugin.getLogger().log(Level.SEVERE, "Failed to restore inventory for " + p.getName(), e);
-            return false;
-        }
-    }
 }
