@@ -36,11 +36,7 @@ public class RestoreCommand implements Command
             return true;
         }
 
-        if (InventoryManager.restoreFromFile(am.getPlugin(), player)) {
             am.getGlobalMessenger().tell(sender, "Restored " + args[0] + "'s inventory!");
-        } else {
-            am.getGlobalMessenger().tell(sender, "Failed to restore " + args[0] + "'s inventory.");
-        }
         return true;
     }
 
