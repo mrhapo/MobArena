@@ -807,7 +807,6 @@ public class ArenaImpl implements Arena
         // Clear inventory if player is an arena player, and unmount
         if (arenaPlayers.contains(p)) {
             unmount(p);
-            clearInv(p);
         }
 
         removePermissionAttachments(p);
@@ -863,7 +862,6 @@ public class ArenaImpl implements Arena
         // Clear the player's inventory, and unmount
         if (arenaPlayers.remove(p)) {
             unmount(p);
-            clearInv(p);
         }
 
         deadPlayers.add(p);
@@ -871,12 +869,6 @@ public class ArenaImpl implements Arena
     }
 
     private void clearInv(Player p) {
-        InventoryView view = p.getOpenInventory();
-        if (view != null) {
-            view.setCursor(new ItemStack(Material.AIR));
-            view.getBottomInventory().clear();
-            view.close();
-        }
     }
 
     private void unmount(Player p) {
@@ -1160,7 +1152,6 @@ public class ArenaImpl implements Arena
             return;
         }
 
-        InventoryManager.clearInventory(p);
         removePotionEffects(p);
         arenaPlayer.setArenaClass(arenaClass);
         arenaClass.grantItems(p);
@@ -1192,7 +1183,6 @@ public class ArenaImpl implements Arena
             return;
         }
 
-        InventoryManager.clearInventory(p);
         removePermissionAttachments(p);
         removePotionEffects(p);
         arenaPlayer.setArenaClass(arenaClass);
