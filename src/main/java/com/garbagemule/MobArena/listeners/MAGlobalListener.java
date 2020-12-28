@@ -5,7 +5,6 @@ import com.garbagemule.MobArena.PluginVersionCheck;
 import com.garbagemule.MobArena.framework.Arena;
 import com.garbagemule.MobArena.framework.ArenaMaster;
 import com.garbagemule.MobArena.leaderboards.Stats;
-import com.garbagemule.MobArena.util.inventory.InventoryManager;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -308,7 +307,6 @@ public class MAGlobalListener implements Listener
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void playerJoin(PlayerJoinEvent event) {
-        InventoryManager.restoreFromFile(plugin, event.getPlayer());
         if (!am.notifyOnUpdates() || !event.getPlayer().isOp()) return;
 
         UUID id = event.getPlayer().getUniqueId();
