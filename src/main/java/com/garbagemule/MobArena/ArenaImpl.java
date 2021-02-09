@@ -810,7 +810,6 @@ public class ArenaImpl implements Arena
         }
 
         removePermissionAttachments(p);
-        removePotionEffects(p);
 
         boolean refund = inLobby(p);
 
@@ -889,7 +888,6 @@ public class ArenaImpl implements Arena
     @Override
     public void revivePlayer(Player p) {
         removePermissionAttachments(p);
-        removePotionEffects(p);
 
         specPlayers.add(p);
 
@@ -1152,10 +1150,6 @@ public class ArenaImpl implements Arena
             return;
         }
 
-        removePotionEffects(p);
-        arenaPlayer.setArenaClass(arenaClass);
-        arenaClass.grantItems(p);
-        arenaClass.grantPotionEffects(p);
         arenaClass.grantLobbyPermissions(p);
 
         if (arenaClass.hasUnbreakableWeapons()) {
@@ -1184,86 +1178,9 @@ public class ArenaImpl implements Arena
         }
 
         removePermissionAttachments(p);
-        removePotionEffects(p);
         arenaPlayer.setArenaClass(arenaClass);
 
-        PlayerInventory inv = p.getInventory();
-
-        // Clone the source array to make sure we don't modify its contents
-        ItemStack[] contents = new ItemStack[source.length];
-        for (int i = 0; i < source.length; i++) {
-            if (source[i] != null) {
-                contents[i] = source[i].clone();
-            }
-        }
-
-        // Collect armor items, because setContents() now overwrites everyhing
-        ItemStack helmet = null;
-        ItemStack chestplate = null;
-        ItemStack leggings = null;
-        ItemStack boots = null;
-        ItemStack offhand = null;
-
-        // Check the very last slot to see if it'll work as a helmet
-        int last = contents.length-1;
-        if (contents[last] != null) {
-            helmet = contents[last];
-            if (arenaClass.hasUnbreakableArmor()) {
-                makeUnbreakable(helmet);
-            }
-            contents[last] = null;
-        }
-
-        // Check the remaining three of the four last slots for armor
-        for (int i = contents.length-1; i > contents.length-5; i--) {
-            if (contents[i] == null) continue;
-
-            String[] parts = contents[i].getType().name().split("_");
-            String type = parts[parts.length - 1];
-            if (type.equals("HELMET")) continue;
-
-            ItemStack stack = contents[i];
-            if (arenaClass.hasUnbreakableArmor()) {
-                makeUnbreakable(stack);
-            }
-            switch (type) {
-                case "ELYTRA":
-                case "CHESTPLATE": chestplate = stack; break;
-                case "LEGGINGS":   leggings   = stack; break;
-                case "BOOTS":      boots      = stack; break;
-                default: break;
-            }
-            contents[i] = null;
-        }
-
-        // Equip the fifth last slot as the off-hand
-        offhand = contents[contents.length - 5];
-        if (offhand != null) {
-            if (arenaClass.hasUnbreakableWeapons()) {
-                makeUnbreakable(offhand);
-            }
-            if (arenaClass.hasUnbreakableArmor()) {
-                makeUnbreakable(offhand);
-            }
-            contents[contents.length - 5] = null;
-        }
-
-        // Check the remaining slots for weapons
-        if (arenaClass.hasUnbreakableWeapons()) {
-            for (ItemStack stack : contents) {
-                makeUnbreakable(stack);
-            }
-        }
-
-        // Set contents, THEN set armor contents
-        inv.setContents(contents);
-        inv.setHelmet(helmet);
-        inv.setChestplate(chestplate);
-        inv.setLeggings(leggings);
-        inv.setBoots(boots);
-        inv.setItemInOffHand(offhand);
-
-        arenaClass.grantPotionEffects(p);
+  
         arenaClass.grantLobbyPermissions(p);
 
         autoReady(p);
@@ -1335,9 +1252,6 @@ public class ArenaImpl implements Arena
     }
 
     private void removePotionEffects(Player p) {
-        p.getActivePotionEffects().stream()
-            .map(PotionEffect::getType)
-            .forEach(p::removePotionEffect);
     }
 
     private void cleanup() {
